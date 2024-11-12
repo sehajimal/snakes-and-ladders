@@ -38,7 +38,7 @@ void generateBoard(char p1[], char p2[], int *pos1, int *pos2) {
     
     int newCount = 1;
     for(int i = 1; i<=10; i++){
-        for(int j = 9; j<=0; j--){
+        for(int j = 9; j>=1; j--){
             newCount++;
            if((newCount == *pos1) && (newCount == *pos2)) {
             strcpy(board[i-1][j-1], "B");
@@ -140,8 +140,8 @@ int main() {
 
 
     char status[100] = "in progress";
-    int player1Pos = 0;
-    int player2Pos = 0;
+    int player1Pos = 1;
+    int player2Pos = 1;
 
 
     char player1[5] = "P1";
