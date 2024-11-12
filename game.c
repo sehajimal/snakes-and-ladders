@@ -5,60 +5,58 @@
 
 
 int rollDice() {
-    return rand() % 6 + 1;
+    int roll = rand() % 6 + 1;
+    printf("You rolled a %d\n", roll);
+    return roll;
 }
 
 
 void generateBoard(char p1[], char p2[], int *pos1, int *pos2) {
     char board[10][10][5];
-    int count = 1;
-    for(int i = 1; i<=10; i++){
-        for(int j = 1; j<=10; j++){
-            if(count == 40 || count == 30 || count == 20 || count == 10){
-                sprintf(board[i-1][j-1], "%s", "|-|");
+    int count;
+
+    for (int i = 9; i >= 0; i--) { 
+        for (int j = 0; j < 10; j++) {
+            if (i % 2 == 0) { 
+                count = i * 10 + (9 - j) + 1;
+            } else {          
+                count = i * 10 + j + 1;
             }
-            else if(count == 82 || count == 72 || count == 62){
-                sprintf(board[i-1][j-1], "%s", "|-|");
+
+            if (count == 81 || count == 80 || count == 61 || count == 60 ||
+                count == 36 || count == 25 || count == 16 || count == 69 || 
+                count == 52 || count == 49 || count == 32) {
+                sprintf(board[i][j], "|-|");
+            } else if (count == 21 || count == 19 || count == 3 || 
+                       count == 94 || count == 86 || count == 76 || count == 64) {
+                sprintf(board[i][j], "~");
+            } else {
+                sprintf(board[i][j], "%d", count);
             }
-            else if(count == 17 || count == 27 || count == 37 || count == 47){
-                sprintf(board[i-1][j-1], "%s", "|-|");
-            }
-            else if(count == 29 || count == 18 || count == 7){
-                sprintf(board[i-1][j-1], "%s", "~");
-            }
-            else if(count == 93 || count == 84 || count == 75 || count == 66){
-                sprintf(board[i-1][j-1], "%s", "~");
-            }
-            else {
-                sprintf(board[i-1][j-1], "%d", count);
-            }    
-            count++;
-            }
-        }
-    
-    int newCount = 1;
-    for(int i = 1; i<=10; i++){
-        for(int j = 9; j>=1; j--){
-            newCount++;
-           if((newCount == *pos1) && (newCount == *pos2)) {
-            strcpy(board[i-1][j-1], "B");
-           }
-           else if(newCount == *pos1){
-            strcpy(board[i-1][j-1], p1);
-           }
-           else if(newCount == *pos2){
-            strcpy(board[i-1][j-1], p2);
-           }
         }
     }
-   
-    for(int i = 9; i>=0; i--){
-        for(int j = 9; j>=0; j--){
+
+    for (int i = 9; i >= 0; i--) {
+        for (int j = 0; j < 10; j++) {
+            int boardPosition = (i % 2 == 0) ? (i * 10 + (9 - j) + 1) : (i * 10 + j + 1);
+            if (boardPosition == *pos1 && boardPosition == *pos2) {
+                strcpy(board[i][j], "B");
+            } else if (boardPosition == *pos1) {
+                strcpy(board[i][j], p1);
+            } else if (boardPosition == *pos2) {
+                strcpy(board[i][j], p2);
+            }
+        }
+    }
+
+    for (int i = 9; i >= 0; i--) {
+        for (int j = 0; j < 10; j++) {
             printf("%-4s", board[i][j]);
         }
         printf("\n");
     }
 }
+
 
 int player1Movement(char state[], int *pos1){
     int roll = rollDice();
@@ -66,20 +64,20 @@ int player1Movement(char state[], int *pos1){
     *pos1+=roll;
 
 
-    if(*pos1 == 10) {
-        *pos1 = 40;
+    if(*pos1 == 60) {
+        *pos1 = 81;
     }
-    else if(*pos1 == 62) {
-        *pos1 = 82;
+    else if(*pos1 == 16) {
+        *pos1 = 36;
     }
-    else if(*pos1 == 17) {
-        *pos1 = 47;
+    else if(*pos1 == 32) {
+        *pos1 = 69;
     }
-    else if(*pos1 == 29) {
-        *pos1 = 7;
+    else if(*pos1 == 21) {
+        *pos1 = 3;
     }
-    else if(*pos1 == 93) {
-        *pos1 = 66;
+    else if(*pos1 == 94) {
+        *pos1 = 64;
     }
 
 
@@ -95,20 +93,20 @@ int player2Movement(char state[], int *pos2){
     *pos2+=roll;
 
 
-    if(*pos2 == 10) {
-        *pos2 = 40;
+    if(*pos2 == 60) {
+        *pos2 = 81;
     }
-    else if(*pos2 == 62) {
-        *pos2 = 82;
+    else if(*pos2 == 16) {
+        *pos2 = 36;
     }
-    else if(*pos2 == 17) {
-        *pos2 = 47;
+    else if(*pos2 == 32) {
+        *pos2 = 69;
     }
-    else if(*pos2 == 29) {
-        *pos2 = 7;
+    else if(*pos2 == 21) {
+        *pos2 = 3;
     }
-    else if(*pos2 == 93) {
-        *pos2 = 66;
+    else if(*pos2 == 94) {
+        *pos2 = 64;
     }
 
 
@@ -137,6 +135,7 @@ void letsRoll() {
 
 int main() {
     printf("Let's play Snakes and Ladders!\n");
+     srand(time(0)); 
 
 
     char status[100] = "in progress";
