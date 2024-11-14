@@ -48,7 +48,7 @@ void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength,
                 snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");
             } else {
                 board[i][j].type = 'N';                     // Regular slot
-                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "%d", count);
+                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "*");
             }
         }
     }
@@ -62,26 +62,7 @@ void printBoard(int boardLength, int boardHeight, struct Slot board[boardLength]
         printf("\n");  // Newline after each row
     }
 }
-/*
-void updateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]) {
-    //char board[boardLength][boardHeight][5];
-    //int count;
 
-    // adding player position to board
-    for (int i = 9; i >= 0; i--) {
-        for (int j = 0; j < 10; j++) {
-            int boardPosition = (i % 2 == 0) ? (i * boardLength + (boardHeight - j)) : (i * boardLength + j + 1);
-            if (boardPosition == *pos1 && boardPosition == *pos2) {
-                strcpy(board[i][j], "B");
-            } else if (boardPosition == *pos1) {
-                strcpy(board[i][j], p1);
-            } else if (boardPosition == *pos2) {
-                strcpy(board[i][j], p2);
-            }
-        }
-    }
-    #include <string.h>
-*/
 void updateBoard(char p1[], char p2[], int *pos1, int *pos2, int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]) {
     // Update the board with players' positions
     for (int i = boardLength - 1; i >= 0; i--) {
@@ -103,7 +84,7 @@ void updateBoard(char p1[], char p2[], int *pos1, int *pos2, int boardLength, in
                 } else if (board[i][j].type == 'S') {
                     snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");    // Snake
                 } else {
-                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "%d", board[i][j].index); // Default slot with index
+                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "*"); // Default slot with index
                 }
             }
         }
