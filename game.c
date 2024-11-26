@@ -124,7 +124,7 @@ int playerMovement(int *pos) {
 void letsRoll() {
     while(1){
         char button;
-        printf("Press 'R' to roll the dice.\n");
+        printf("type 'r' and press enter to roll the dice.\n");
         scanf(" %c", &button);
         if(button == 'r'){
             printf("rolling dice...\n");
@@ -162,6 +162,7 @@ int main() {
 
     while (strcmp(status, "in progress") == 0) {
         // Player 1's turn
+        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         printf("Player 1, roll the dice.\n");
         letsRoll();  // Assuming this function simulates dice roll output
         if (playerMovement(&player1Pos)) {
@@ -176,6 +177,7 @@ int main() {
         if (strcmp(status, "in progress") != 0) break;
 
         // Player 2's turn
+        printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         printf("Player 2, roll the dice.\n");
         letsRoll();  // Assuming this function simulates dice roll output
         if (playerMovement(&player2Pos)) {
@@ -189,5 +191,18 @@ int main() {
     }
 
     return 0;
+}
+
+//function for when user does help flag
+void help() 
+{
+    printf("Usage: convert [-b BASE] [-r START FINISH]\n");
+    printf("        1 < BASE < 37\n");
+    printf("        START and FINISH are long integers\n\n");
+    printf("Testing the utility example:\n");
+    printf(" {convert -b 2 -r -3 3}   This will convert the integers from the range -3 to 3 to base 2.\n");
+    printf(" Can use 2 flags {-b Base} and {-r Start finish}\n");
+    printf(" the flag {-r Start finish} will allow 'convert' to output a range of conversions of long integers [START,FINISH]. Without it it will use standard input\n");
+    printf(" The {-b Base} flag tells 'convert' which base to do the conversion to. And not using it will automatically convert to base 16\n");
 }
 
