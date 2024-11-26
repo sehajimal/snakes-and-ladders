@@ -196,11 +196,10 @@ int main(int argc, char *argv[]) {
 //function for when user does help flag
 void help() 
 {
-    printf("Usage: convert [-b BASE] [-r START FINISH]\n");
-    printf("        1 < BASE < 37\n");
-    printf("        START and FINISH are long integers\n\n");
-    printf("Testing the utility example:\n");
-    printf(" {convert -b 2 -r -3 3}   This will convert the integers from the range -3 to 3 to base 2.\n");
+    printf("Usage: game\n");
+    printf("        This snakes and ladders game is played from the command line and the\n\n");
+    printf("Playing the game example:\n");
+    printf(" {game}   This will convert the integers from the range -3 to 3 to base 2.\n");
     printf(" Can use 2 flags {-b Base} and {-r Start finish}\n");
     printf(" the flag {-r Start finish} will allow 'convert' to output a range of conversions of long integers [START,FINISH]. Without it it will use standard input\n");
     printf(" The {-b Base} flag tells 'convert' which base to do the conversion to. And not using it will automatically convert to base 16\n");
