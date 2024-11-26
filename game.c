@@ -137,7 +137,7 @@ void letsRoll() {
 }
 
 
-int main() {
+int main(int argc, char *argv[]) {
     printf("Let's play Snakes and Ladders!\n");
     srand(time(0)); 
 
