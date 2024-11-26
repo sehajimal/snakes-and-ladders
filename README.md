@@ -1,4 +1,2 @@
-## Snakes and Ladders    
-
-
-
+## Snakes and Ladders Game
+This is a fun and interactive game played in the command line. A remake of the famous game snakes and ladders, to win be the first person to reach the end, try to avoid the snakes and climb ladders to reach victory! This is a two player game where the player is able to roll a dice and move throughout the board. The user interface is a board with simple instructions to roll the dice and displaying the number rolled.
