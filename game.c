@@ -91,34 +91,56 @@ void updateBoard(char p1[], char p2[], int *pos1, int *pos2, int boardLength, in
     }
 }
 
-//! REFACTOR TO WORK WITH DYNAMIC SNAKE AND LADDER PALCEMENT
-int playerMovement(int *pos) {
+int playerMovement(int *pos, int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]) {
     int roll = rollDice();
     *pos += roll;
 
-    // Check for snakes and ladders
-    if (*pos == 60) {
-        *pos = 81;
-    }
-    else if (*pos == 16) {
-        *pos = 36;
-    }
-    else if (*pos == 32) {
-        *pos = 69;
-    }
-    else if (*pos == 21) {
-        *pos = 3;
-    }
-    else if (*pos == 94) {
-        *pos = 64;
+    int winningIndex = boardLength * boardHeight;
+    if (*pos >= winningIndex) 
+    {
+        *pos = winningIndex; 
+        return 1; 
     }
 
-    // Check if player has won
-    if (*pos == 100) {
-        return 1;  // Player has won
+    for (int i = 0; i < boardLength; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            if (board[i][j].index == *pos) {
+                if (board[i][j].type == 'S') {
+                    printf("You landed on a snake! Sliding down...\n");
+
+                    // Move down the snake
+                    while ((i - 1) >= 0) { // Ensure we stay within bounds
+                        if ((j - 1) >= 0 && board[i - 1][j - 1].type == 'S') {
+                            i--; // Move up a row
+                            j--; // Move left
+                        } else if ((j + 1) < boardHeight && board[i - 1][j + 1].type == 'S') {
+                            i--; // Move up a row
+                            j++; // Move right
+                        } else {
+                            break; // No more snake segments in this direction
+                        }
+                    }
+
+                    *pos = board[i][j].index; // Update player's position to the final snake segment
+                }
+
+                // If it's a ladder
+                else if (board[i][j].type == 'L') {
+                    printf("You found a ladder! Climbing up...\n");
+                    while (i + 1 < boardLength && board[i+1][j].type == 'L') {
+                        i++;
+                    }
+                    *pos = board[i][j].index; // Update position to the top of the ladder
+                }
+                return 0; // Game continues
+            }
+        }
     }
-    return 0;  // Game continues
+
+    // If not on a snake or ladder, position remains unchanged
+    return 0;
 }
+
 
 
 void letsRoll() {
@@ -136,8 +158,26 @@ void letsRoll() {
     }
 }
 
+//function for when user does help flag
+void help() 
+{
+    printf("Usage: game\n");
+    printf("        This snakes and ladders game is played from the command line and the\n\n");
+    printf("Playing the game example:\n");
+    printf(" {game}   This will convert the integers from the range -3 to 3 to base 2.\n");
+    printf(" Can use 2 flags {-b Base} and {-r Start finish}\n");
+    printf(" the flag {-r Start finish} will allow 'convert' to output a range of conversions of long integers [START,FINISH]. Without it it will use standard input\n");
+    printf(" The {-b Base} flag tells 'convert' which base to do the conversion to. And not using it will automatically convert to base 16\n");
+}
+
 
 int main(int argc, char *argv[]) {
+    if (argc > 1 && strcmp(argv[1], "--help") == 0) 
+    {
+        help();
+        return 0;
+    }
+
     printf("Let's play Snakes and Ladders!\n");
     srand(time(0)); 
 
@@ -165,7 +205,7 @@ int main(int argc, char *argv[]) {
         printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         printf("Player 1, roll the dice.\n");
         letsRoll();  // Assuming this function simulates dice roll output
-        if (playerMovement(&player1Pos)) {
+        if (playerMovement(&player1Pos, boardLength, boardHeight, board)) {
             strcpy(status, "Player 1 has won!");
             printf("%s\n", status);
         }
@@ -180,7 +220,7 @@ int main(int argc, char *argv[]) {
         printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         printf("Player 2, roll the dice.\n");
         letsRoll();  // Assuming this function simulates dice roll output
-        if (playerMovement(&player2Pos)) {
+        if (playerMovement(&player2Pos, boardLength, boardHeight, board)) {
             strcpy(status, "Player 2 has won!");
             printf("%s\n", status);
         }
@@ -191,17 +231,5 @@ int main(int argc, char *argv[]) {
     }
 
     return 0;
-}
-
-//function for when user does help flag
-void help() 
-{
-    printf("Usage: game\n");
-    printf("        This snakes and ladders game is played from the command line and the\n\n");
-    printf("Playing the game example:\n");
-    printf(" {game}   This will convert the integers from the range -3 to 3 to base 2.\n");
-    printf(" Can use 2 flags {-b Base} and {-r Start finish}\n");
-    printf(" the flag {-r Start finish} will allow 'convert' to output a range of conversions of long integers [START,FINISH]. Without it it will use standard input\n");
-    printf(" The {-b Base} flag tells 'convert' which base to do the conversion to. And not using it will automatically convert to base 16\n");
 }
 
