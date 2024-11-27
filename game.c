@@ -14,6 +14,7 @@ struct Slot {
 int rollDice() {
     int roll = rand() % 6 + 1;
     printf("You rolled a %d\n", roll);
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     return roll;
 }
 
@@ -131,36 +132,32 @@ int playerMovement(int *pos, int boardLength, int boardHeight, struct Slot board
                 if (board[i][j].type == 'C') {
                     printf("You landed on a snake! Sliding down...\n");
 
-                    // Move down the snake
-                    while ((i - 1) >= 0) { // Ensure we stay within bounds
+                    while ((i - 1) >= 0) { 
                         if ((j - 1) >= 0 && board[i - 1][j - 1].type == 'S') {
-                            i--; // Move up a row
-                            j--; // Move left
+                            i--;
+                            j--; 
                         } else if ((j + 1) < boardHeight && board[i - 1][j + 1].type == 'S') {
-                            i--; // Move up a row
-                            j++; // Move right
+                            i--; 
+                            j++; 
                         } else {
-                            break; // No more snake segments in this direction
+                            break; 
                         }
                     }
 
-                    *pos = board[i][j].index; // Update player's position to the final snake segment
+                    *pos = board[i][j].index; 
                 }
 
-                // If it's a ladder
                 else if (board[i][j].type == 'A') {
                     printf("You found a ladder! Climbing up...\n");
                     while (i + 1 < boardLength && board[i+1][j].type == 'L') {
                         i++;
                     }
-                    *pos = board[i][j].index; // Update position to the top of the ladder
+                    *pos = board[i][j].index; 
                 }
-                return 0; // Game continues
+                return 0; 
             }
         }
     }
-
-    // If not on a snake or ladder, position remains unchanged
     return 0;
 }
 
@@ -172,27 +169,48 @@ void letsRoll() {
         printf("type 'r' and press enter to roll the dice.\n");
         scanf(" %c", &button);
         if(button == 'r'){
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             printf("rolling dice...\n");
             break;
         }
         else {
+            printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
             printf("Invalid command.\n");
         }
     }
 }
 
-//function for when user does help flag
-void help() 
-{
-    printf("Usage: game\n");
-    printf("        This snakes and ladders game is played from the command line and the\n\n");
-    printf("Playing the game example:\n");
-    printf(" {game}   This will convert the integers from the range -3 to 3 to base 2.\n");
-    printf(" Can use 2 flags {-b Base} and {-r Start finish}\n");
-    printf(" the flag {-r Start finish} will allow 'convert' to output a range of conversions of long integers [START,FINISH]. Without it it will use standard input\n");
-    printf(" The {-b Base} flag tells 'convert' which base to do the conversion to. And not using it will automatically convert to base 16\n");
-}
+// Function for when user requests help
 
+void help() {
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    printf("       Welcome to the Epic Snakes & Ladders Game!         \n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    printf("Below is a list of instructions to win the game of snakes and ladders's\n\n");
+
+    printf(" Rules:\n");
+    printf("1. This is a two-player game, where each player takes turns rolling the dice.\n");
+    printf("2. Your goal is to be the first to reach the end of the board.\n");
+    printf("3. Type 'r' and press enter to roll the dice\n");
+    printf("4. Landing on a snakes head marked with a '#' will send you sliding back down the board.\n");
+    printf("5. Land on the bottom of ladders |*| to help you climb up and skip ahead!\n");
+    printf("\n");
+
+    printf(" Symbols:\n");
+    printf(" *   : Neutral spot. Simply a safe spot.\n");
+    printf(" |*| : Ladder. Will allow you to climb up!\n");
+    printf(" #   : Snake. This will pull you down.\n");
+    printf(" P1  : Player 1's current position.\n");
+    printf(" P2  : Player 2's current position.\n");
+    printf(" B   : Both players on the same slot.\n");
+    printf("\n");
+
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    printf(" How to Win:\n");
+    printf(" * The first player to reach the final spot (Slot 100) is the champion!\n");
+    printf(" * Best of luck!\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+}
 
 int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "--help") == 0) 
@@ -200,8 +218,10 @@ int main(int argc, char *argv[]) {
         help();
         return 0;
     }
-
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     printf("Let's play Snakes and Ladders!\n");
+    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
     srand(time(0)); 
 
     char status[100] = "in progress";
