@@ -37,13 +37,26 @@ void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength,
             // Assign type and symbol based on conditions
             //! REFACTOR TO WORK WITH DYNAMIC SIZED BOARDS
                 // maybe generate 3 snakes and 3 ladders all the time
-            if (count == 81 || count == 80 || count == 61 || count == 60 ||
-                count == 36 || count == 25 || count == 16 || count == 69 || 
-                count == 52 || count == 49 || count == 32) {
+            
+            if (count == 16 || count == 60 || count == 32){
+                board[i][j].type = 'A';                     // Ladder
+                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|*|");
+            }
+            
+            else if (count == 81 || count == 80 || count == 61 || count == 69 ||
+                count == 36 || count == 25 ||  
+                count == 52 || count == 49 ) {
                 board[i][j].type = 'L';                     // Ladder
                 snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|-|");
-            } else if (count == 21 || count == 19 || count == 3 || 
-                       count == 94 || count == 86 || count == 76 || count == 64) {
+            } 
+
+            else if (count == 21 || count == 94){
+                board[i][j].type = 'C';                     // Snake
+                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "#");
+            }
+            
+            else if ( count == 19 || count == 3 
+                        || count == 86 || count == 76 || count == 64) {
                 board[i][j].type = 'S';                     // Snake
                 snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");
             } else {
@@ -81,7 +94,17 @@ void updateBoard(char p1[], char p2[], int *pos1, int *pos2, int boardLength, in
                 // Reset symbol to its original state based on slot type
                 if (board[i][j].type == 'L') {
                     snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|-|");  // Ladder
-                } else if (board[i][j].type == 'S') {
+                }
+
+                else if(board[i][j].type == 'A'){
+                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|*|");  // Ladder
+                }
+
+                else if(board[i][j].type == 'C'){
+                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "#");  // Ladder
+                }
+
+                else if (board[i][j].type == 'S') {
                     snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");    // Snake
                 } else {
                     snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "*"); // Default slot with index
@@ -105,7 +128,7 @@ int playerMovement(int *pos, int boardLength, int boardHeight, struct Slot board
     for (int i = 0; i < boardLength; i++) {
         for (int j = 0; j < boardHeight; j++) {
             if (board[i][j].index == *pos) {
-                if (board[i][j].type == 'S') {
+                if (board[i][j].type == 'C') {
                     printf("You landed on a snake! Sliding down...\n");
 
                     // Move down the snake
@@ -125,7 +148,7 @@ int playerMovement(int *pos, int boardLength, int boardHeight, struct Slot board
                 }
 
                 // If it's a ladder
-                else if (board[i][j].type == 'L') {
+                else if (board[i][j].type == 'A') {
                     printf("You found a ladder! Climbing up...\n");
                     while (i + 1 < boardLength && board[i+1][j].type == 'L') {
                         i++;
