@@ -57,17 +57,18 @@ void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength,
 
     }
 
-    for(int i = 0; i< numSnakes; i++){
+    for(int i = 0; i< numSnakes; i++){  //Loop until all the snakes are in place
         int snakePosition;
         do{
-            snakePosition = rand()%(boardLength*boardHeight-1)+2;
-        }while (board[(snakePosition-1)/boardHeight][(snakePosition-1)%boardHeight].type != 'N');
+            snakePosition = rand()%(boardLength*boardHeight-1)+2; //Get random indexes to place the snakes
+        }while (board[(snakePosition-1)/boardHeight][(snakePosition-1)%boardHeight].type != 'N'); //repeat the loop until the place is not a neutral place
 
+//convert the indexes in terms of rows and columns
         int row = (snakePosition-1)/boardHeight;
         int col = (snakePosition-1)%boardHeight;
 
-        board[row][col].type = 'S';
-        snprintf(board[row][col].symbol, sizeof(board[row][col].symbol), "~");
+        board[row][col].type = 'S'; //Change the type of that index
+        snprintf(board[row][col].symbol, sizeof(board[row][col].symbol), "~"); //Replace that index with the snake symbol
         
     }
 }
