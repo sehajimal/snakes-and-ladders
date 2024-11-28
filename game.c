@@ -42,17 +42,17 @@ void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength,
     int numLadders = 5; //Number of snake and ladders (This can me randomly assigned as well)
     int numSnakes = 5;
 
-    for (int i = 0 ; i< numLadders; i++){
+    for (int i = 0 ; i< numLadders; i++){//Lopp until all the ladders are in place
         int ladderPosition;
         do{
             ladderPosition = rand()%(boardLength*boardHeight-1)+2; //Avoids first and last slot
         }while (board[(ladderPosition-1)/boardHeight][(ladderPosition-1)%boardHeight].type != 'N');
 
-//Convert the random index to rows and column index
+//Convert the random index to rows and column ind
         int row = (ladderPosition - 1)/boardHeight; 
         int col = (ladderPosition - 1)%boardHeight;
 
-        board[row][col].type - 'L'; //Convert the type in that index to L
+        board[row][col].type = 'L'; //Convert the type in that index to L
         snprintf(board[row][col].symbol, sizeof(board[row][col].symbol), "|-|"); //Replace the index with a ladder symbol
 
     }
