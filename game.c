@@ -19,52 +19,56 @@ int rollDice() {
 }
 
 
-void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]) {
-    //struct Slot board[boardLength][boardHeight];
+void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]){
     int count;
-
-    // Generating the board
-    for (int i = boardLength - 1; i >= 0; i--) { 
-        for (int j = 0; j < boardHeight; j++) {
-            if (i % 2 == 0) { 
-                count = i * boardHeight + (boardHeight - j);
-            } else {          
-                count = i * boardHeight + j + 1;
+//Create Board
+    for(int i = boardLength-1; i>=0 ; i--){
+        for (int j =0; j < boardHeight; j++){
+            if (i%2 == 0){
+                count  = i * boardHeight + (boardHeight - j);
             }
-
-            // Set the index for each slot
+            else{
+                count  = i * boardHeight + j + 1;   
+            }
             board[i][j].index = count;
-
-            // Assign type and symbol based on conditions
-            //! REFACTOR TO WORK WITH DYNAMIC SIZED BOARDS
-                // maybe generate 3 snakes and 3 ladders all the time
-            
-            if (count == 16 || count == 60 || count == 32){
-                board[i][j].type = 'A';                     // Ladder
-                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|*|");
-            }
-            
-            else if (count == 81 || count == 80 || count == 61 || count == 69 ||
-                count == 36 || count == 25 ||  
-                count == 52 || count == 49 ) {
-                board[i][j].type = 'L';                     // Ladder
-                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|-|");
-            } 
-
-            else if (count == 21 || count == 94){
-                board[i][j].type = 'C';                     // Snake
-                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "#");
-            }
-            
-            else if ( count == 19 || count == 3 
-                        || count == 86 || count == 76 || count == 64) {
-                board[i][j].type = 'S';                     // Snake
-                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");
-            } else {
-                board[i][j].type = 'N';                     // Regular slot
-                snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "*");
-            }
+            board[i][j].type = 'N';
+            snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "*");
         }
+
+    }
+
+    //Randomly Assign Snake and Ladders
+    
+    int numLadders = 5; //Number of snake and ladders (This can me randomly assigned as well)
+    int numSnakes = 5;
+
+    for (int i = 0 ; i< numLadders; i++){
+        int ladderPosition;
+        do{
+            ladderPosition = rand()%(boardLength*boardHeight-1)+2; //Avoids first and last slot
+        }while (board[(ladderPosition-1)/boardHeight][(ladderPosition-1)%boardHeight].type != 'N');
+
+//Convert the random index to rows and column index
+        int row = (ladderPosition - 1)/boardHeight; 
+        int col = (ladderPosition - 1)%boardHeight;
+
+        board[row][col].type - 'L'; //Convert the type in that index to L
+        snprintf(board[row][col].symbol, sizeof(board[row][col].symbol), "|-|"); //Replace the index with a ladder symbol
+
+    }
+
+    for(int i = 0; i< numSnakes; i++){
+        int snakePosition;
+        do{
+            snakePosition = rand()%(boardLength*boardHeight-1)+2;
+        }while (board[(snakePosition-1)/boardHeight][(snakePosition-1)%boardHeight].type != 'N');
+
+        int row = (snakePosition-1)/boardHeight;
+        int col = (snakePosition-1)%boardHeight;
+
+        board[row][col].type = 'S';
+        snprintf(board[row][col].symbol, sizeof(board[row][col].symbol), "~");
+        
     }
 }
 
