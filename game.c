@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 
+//void printBoard(int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]);
 
 struct Slot {
     char symbol[5];
@@ -10,6 +11,8 @@ struct Slot {
     // L for ladder, S for snake, N for nothing
     char type;
 };
+
+void printBoard(int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]);
 
 int rollDice() {
     int roll = rand() % 6 + 1;
@@ -21,57 +24,140 @@ int rollDice() {
 
 void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]){
     int count;
-//Create Board
-    for(int i = boardLength-1; i>=0 ; i--){
-        for (int j =0; j < boardHeight; j++){
-            if (i%2 == 0){
-                count  = i * boardHeight + (boardHeight - j);
+    for (int i = boardLength - 1; i >= 0; i--){
+        for (int j = 0; j < boardHeight; j++){
+            if (i % 2 == 0){
+                count = i * boardHeight + (boardHeight - j);
             }
             else{
-                count  = i * boardHeight + j + 1;   
+                count = i * boardHeight + j + 1;   
             }
             board[i][j].index = count;
             board[i][j].type = 'N';
             snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "*");
         }
-
     }
 
-    //Randomly Assign Snake and Ladders
-    
-    int numLadders = 5; //Number of snake and ladders (This can me randomly assigned as well)
-    int numSnakes = 5;
+    int numLadders = (rand() % 4) + 2;
+    int totalCells = boardHeight * boardLength;
 
-    for (int i = 0 ; i< numLadders; i++){//Lopp until all the ladders are in place
-        int ladderPosition;
-        do{
-            ladderPosition = rand()%(boardLength*boardHeight-1)+2; //Avoids first and last slot
-        }while (board[(ladderPosition-1)/boardHeight][(ladderPosition-1)%boardHeight].type != 'N');
+    while (numLadders > 0){
+        int ladderStartPosition;
+        do {
+            ladderStartPosition = (rand() % (totalCells - 10)) + 6;
+        } while (ladderStartPosition < 0 || ladderStartPosition >= totalCells);
 
-//Convert the random index to rows and column ind
-        int row = (ladderPosition - 1)/boardHeight; 
-        int col = (ladderPosition - 1)%boardHeight;
-
-        board[row][col].type = 'L'; //Convert the type in that index to L
-        snprintf(board[row][col].symbol, sizeof(board[row][col].symbol), "|-|"); //Replace the index with a ladder symbol
-
+        for (int i = 0; i < boardLength; i++){
+            for (int j = 0; j < boardHeight; j++){
+                if (board[i][j].index == ladderStartPosition){
+                    board[i][j].type = 'A';
+                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|-|");
+                }
+            }
+        }
+        numLadders--;
     }
 
-    for(int i = 0; i< numSnakes; i++){  //Loop until all the snakes are in place
-        int snakePosition;
-        do{
-            snakePosition = rand()%(boardLength*boardHeight-1)+2; //Get random indexes to place the snakes
-        }while (board[(snakePosition-1)/boardHeight][(snakePosition-1)%boardHeight].type != 'N'); //repeat the loop until the place is not a neutral place
+    int ladderSize = 3;
+    int length = 0;
 
-//convert the indexes in terms of rows and columns
-        int row = (snakePosition-1)/boardHeight;
-        int col = (snakePosition-1)%boardHeight;
+    for (int i = 0; i < boardLength; i++){
+        for (int j = 0; j < boardHeight; j++){
+            if (board[i][j].type == 'A' && (i + ladderSize < boardLength)){
+                length = 1;
+                while (ladderSize >= length){
+                    board[i + length][j].type = 'L';
+                    snprintf(board[i + length][j].symbol, sizeof(board[i + length][j].symbol), "|-|");
+                    length++;
+                }
+            }
+            else if (board[i][j].type == 'A' && (i - ladderSize >= 0)){
+                board[i][j].type = 'L';
+                length = 1;
+                while (ladderSize > length){
+                    board[i - length][j].type = 'L';
+                    snprintf(board[i - length][j].symbol, sizeof(board[i - length][j].symbol), "|-|");
+                    length++;
+                }
+                board[i - length][j].type = 'A';
+                snprintf(board[i - length][j].symbol, sizeof(board[i - length][j].symbol), "|-|");
+            }
+        }
+    }
 
-        board[row][col].type = 'S'; //Change the type of that index
-        snprintf(board[row][col].symbol, sizeof(board[row][col].symbol), "~"); //Replace that index with the snake symbol
-        
+    int numSnakes = rand() % 2;
+
+    while (numSnakes > 0){
+        int snakeStartPosition;
+        do {
+            snakeStartPosition = (rand() % (totalCells - 10)) + 6;
+        } while (snakeStartPosition < 0 || snakeStartPosition >= totalCells);
+
+        for (int i = 0; i < boardLength; i++){
+            for (int j = 0; j < boardHeight; j++){
+                if (board[i][j].index == snakeStartPosition && board[i][j].type != 'A' && board[i][j].type != 'L'){
+                    board[i][j].type = 'C';
+                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");
+                }
+            }
+        }
+        numSnakes--;
+    }
+
+    int snakeSize = 3;
+    length = 1;
+
+    for (int i = 0; i < boardLength; i++) {
+        for (int j = 0; j < boardHeight; j++) {
+            if (board[i][j].type == 'C' && (i + snakeSize < boardLength) && (j + snakeSize < boardHeight)){ //slide from top right
+                board[i][j].type = 'S';
+                length = 1;
+                while (length < snakeSize){
+                    board[i + length][j + length].type = 'S';
+                    snprintf(board[i + length][j + length].symbol, sizeof(board[i + length][j + length].symbol), "~");
+                    length++;
+                }
+                board[i + length][j + length].type = 'W';
+                snprintf(board[i + length][j + length].symbol, sizeof(board[i + length][j + length].symbol), "~");
+            }
+            else if (board[i][j].type == 'C' && (i - snakeSize >= 0) && (j + snakeSize < boardHeight)){ //slide towards bottom right
+                length = 1;
+                while (length <= snakeSize){
+                    board[i - length][j + length].type = 'S';
+                    snprintf(board[i - length][j + length].symbol, sizeof(board[i - length][j + length].symbol), "~");
+                    length++;
+                }
+            }
+            else if (board[i][j].type == 'C' && (i + snakeSize < boardLength) && (j - snakeSize >= 0)){ //slide from top left
+                board[i][j].type = 'S';
+                length = 1;
+                while (length < snakeSize){
+                    board[i + length][j - length].type = 'S';
+                    snprintf(board[i + length][j - length].symbol, sizeof(board[i + length][j - length].symbol), "~");
+                    length++;
+                }
+                board[i + length][j - length].type = 'M';
+                snprintf(board[i + length][j - length].symbol, sizeof(board[i + length][j - length].symbol), "~");
+            }
+            else if (board[i][j].type == 'C'){ //slide towards bottom left
+                length = 1;
+                while (length <= snakeSize){
+                    board[i - length][j - length].type = 'S';
+                    snprintf(board[i - length][j - length].symbol, sizeof(board[i - length][j - length].symbol), "~");
+                    length++;
+                }
+            }
+        }
+    }
+
+    for (int i = boardLength - 1; i >= 0; i--) {
+        for (int j = 0; j < boardHeight; j++) {
+            printf("%c", board[i][j].type);  // Print each slot's symbol with a width of 4
+        }
+        printf("\n");  // Newline after each row
     }
 }
+
 
 void printBoard(int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]) {
     for (int i = boardLength - 1; i >= 0; i--) {
@@ -98,21 +184,15 @@ void updateBoard(char p1[], char p2[], int *pos1, int *pos2, int boardLength, in
                 snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "%s", p2);
             } else {
                 // Reset symbol to its original state based on slot type
-                if (board[i][j].type == 'L') {
+                if (board[i][j].type == 'L' || board[i][j].type == 'A') {
                     snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|-|");  // Ladder
                 }
 
-                else if(board[i][j].type == 'A'){
-                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "|*|");  // Ladder
+                else if(board[i][j].type == 'C' || board[i][j].type == 'S' || board[i][j].type == 'M' || board[i][j].type == 'W'){
+                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");  // Snake
                 }
 
-                else if(board[i][j].type == 'C'){
-                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "#");  // Ladder
-                }
-
-                else if (board[i][j].type == 'S') {
-                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");    // Snake
-                } else {
+                else {
                     snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "*"); // Default slot with index
                 }
             }
@@ -133,33 +213,22 @@ int playerMovement(int *pos, int boardLength, int boardHeight, struct Slot board
 
     for (int i = 0; i < boardLength; i++) {
         for (int j = 0; j < boardHeight; j++) {
-            if (board[i][j].index == *pos) {
-                if (board[i][j].type == 'C') {
-                    printf("You landed on a snake! Sliding down...\n");
-
-                    while ((i - 1) >= 0) { 
-                        if ((j - 1) >= 0 && board[i - 1][j - 1].type == 'S') {
-                            i--;
-                            j--; 
-                        } else if ((j + 1) < boardHeight && board[i - 1][j + 1].type == 'S') {
-                            i--; 
-                            j++; 
-                        } else {
-                            break; 
-                        }
-                    }
-
-                    *pos = board[i][j].index; 
+            if(board[i][j].index ==  *pos){
+                if(board[i][j].type == 'A'){
+                    *pos = board[i+3][j].index;
                 }
-
-                else if (board[i][j].type == 'A') {
-                    printf("You found a ladder! Climbing up...\n");
-                    while (i + 1 < boardLength && board[i+1][j].type == 'L') {
-                        i++;
-                    }
-                    *pos = board[i][j].index; 
+                else if(board[i][j].type == 'W'){
+                    *pos = board[i-3][j-3].index;
                 }
-                return 0; 
+                else if(board[i][j].type == 'M'){
+                    *pos = board[i-3][j+3].index;
+                }
+                else if((board[i][j].type == 'C') && (board[i-1][j-1].type == 'S')){
+                    *pos = board[i-3][j-3].index;
+                }
+                else if((board[i][j].type == 'C') && (board[i-1][j+1].type == 'S')){
+                    *pos = board[i-3][j+3].index;
+                }
             }
         }
     }
