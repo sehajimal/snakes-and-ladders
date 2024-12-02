@@ -49,7 +49,9 @@ int main(int argc, char *argv[]) {
         updateBoard(player1, player2, &player1Pos, &player2Pos, boardLength, boardHeight, board);
         printBoard(boardLength, boardHeight, board);
 
-        if (strcmp(status, "in progress") != 0) break;
+        if (strcmp(status, "in progress") != 0) {
+            break;
+        }
 
         // Player 2's turn
         printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");

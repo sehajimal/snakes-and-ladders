@@ -304,7 +304,7 @@ void help() {
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 }
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
     if (argc > 1 && strcmp(argv[1], "--help") == 0) 
     {
         help();
@@ -366,5 +366,5 @@ int main(int argc, char *argv[]) {
     }
 
     return 0;
-}
+}*/
 
