@@ -18,4 +18,3 @@ void generateBoard(char p1[], char p2[], int *pos1, int *pos2, int boardLength, 
 void updateBoard(char p1[], char p2[], int *pos1, int *pos2, int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]);
 int playerMovement(int *pos, int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]);
 void letsRoll();
-void help();

@@ -3,13 +3,44 @@
 #include <time.h>
 #include <string.h>
 #include "game.h"
+#include "validation.h"
 
 int main(int argc, char *argv[]) {
+
+    int boardLength;
+    int boardHeight;
+
+    // user is asking for help
     if (argc > 1 && strcmp(argv[1], "--help") == 0) 
     {
         help();
         return 0;
     }
+    // default board dimensions
+    if (argc == 1) {
+        boardLength = 10;
+        boardHeight = 10;
+    }
+    // validating board dimensions when give
+    else if (argc == 3) {
+        int length, height;
+        if (isInputValid(argv[1], &length) && isInputValid(argv[2], &height)) {
+            boardLength = length;
+            boardHeight = height;
+        }
+        // invalid inputs
+        else {
+            error();
+            return 1;
+        }
+    }
+    // invalid number of command line arguement
+    else {
+        usage();
+        return 1;
+    }
+
+
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     printf("Let's play Snakes and Ladders!\n");
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
@@ -20,8 +51,8 @@ int main(int argc, char *argv[]) {
     int player1Pos = 1;
     int player2Pos = 1;
 
-    int boardLength = 10;
-    int boardHeight = 10;
+    // int boardLength = 10;
+    // int boardHeight = 10;
 
     char player1[5] = "P1";
     char player2[5] = "P2";
