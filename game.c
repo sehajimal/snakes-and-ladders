@@ -4,15 +4,6 @@
 #include <string.h>
 #include "slot.h"
 
-//void printBoard(int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]);
-
-// struct Slot {
-//     char symbol[5];
-//     int index;
-//     // L for ladder, S for snake, N for nothing
-//     char type;
-// };
-
 void printBoard(int boardLength, int boardHeight, struct Slot board[boardLength][boardHeight]);
 
 int rollDice() {
@@ -174,6 +165,16 @@ void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength,
             }
         }
     }
+<<<<<<< HEAD
+=======
+
+    // for (int i = boardLength - 1; i >= 0; i--) {
+    //     for (int j = 0; j < boardHeight; j++) {
+    //         printf("%c", board[i][j].type);  // Print each slot's symbol with a width of 4
+    //     }
+    //     printf("\n");  // Newline after each row
+    // }
+>>>>>>> 8e9ebda34ae8b446df6001f0dce0dc144a270da6
 }
 
 
@@ -270,6 +271,7 @@ void letsRoll() {
             printf("Invalid command.\n");
         }
     }
+<<<<<<< HEAD
 }
 
 // Function for when user requests help
@@ -368,3 +370,6 @@ void help() {
     return 0;
 }*/
 
+=======
+}
+>>>>>>> 8e9ebda34ae8b446df6001f0dce0dc144a270da6
