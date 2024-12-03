@@ -12,14 +12,14 @@ void help() {
     printf("1. This is a two-player game, where each player takes turns rolling the dice.\n");
     printf("2. Your goal is to be the first to reach the end of the board.\n");
     printf("3. Type 'r' and press enter to roll the dice\n");
-    printf("4. Landing on a snakes head marked with a '#' will send you sliding back down the board.\n");
-    printf("5. Land on the bottom of ladders |*| to help you climb up and skip ahead!\n");
+    printf("4. Landing on a snakes head marked with a '$' will send you sliding back down the board.\n");
+    printf("5. Land on the bottom of ladders |-| to help you climb up and skip ahead!\n");
     printf("\n");
 
     printf(" Symbols:\n");
     printf(" *   : Neutral spot. Simply a safe spot.\n");
-    printf(" |*| : Ladder. Will allow you to climb up!\n");
-    printf(" #   : Snake. This will pull you down.\n");
+    printf(" |-| : Ladder. Will allow you to climb up!\n");
+    printf(" $   : Snake. This will pull you down.\n");
     printf(" P1  : Player 1's current position.\n");
     printf(" P2  : Player 2's current position.\n");
     printf(" B   : Both players on the same slot.\n");
@@ -35,6 +35,7 @@ void help() {
 void usage() {
     printf("Usage: ./game [boardLength] [boardHeight]\n");
     printf("boardLength and boardHeight must be integers between 8 and 30.\n");
+    printf("The 2nd and 3rd arguments represent the dimensions of a custom board. For example, if './game 10 12' is entered, the game will be played on a 10 x 12 board.");
 }
 
 void error() {

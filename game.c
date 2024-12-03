@@ -113,7 +113,7 @@ void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength,
             for (int j = 0; j < boardHeight; j++){
                 if (board[i][j].index == snakeStartPosition && board[i][j].type != 'A' && board[i][j].type != 'L'){
                     board[i][j].type = 'C';
-                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");
+                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "$");
                 }
             }
         }
@@ -130,17 +130,17 @@ void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength,
                 length = 1;
                 while (length < snakeSize){
                     board[i + length][j + length].type = 'S';
-                    snprintf(board[i + length][j + length].symbol, sizeof(board[i + length][j + length].symbol), "~");
+                    snprintf(board[i + length][j + length].symbol, sizeof(board[i + length][j + length].symbol), "$");
                     length++;
                 }
                 board[i + length][j + length].type = 'W';
-                snprintf(board[i + length][j + length].symbol, sizeof(board[i + length][j + length].symbol), "~");
+                snprintf(board[i + length][j + length].symbol, sizeof(board[i + length][j + length].symbol), "$");
             }
             else if (board[i][j].type == 'C' && (i - snakeSize >= 0) && (j + snakeSize < boardHeight)){ //slide towards bottom right
                 length = 1;
                 while (length <= snakeSize){
                     board[i - length][j + length].type = 'S';
-                    snprintf(board[i - length][j + length].symbol, sizeof(board[i - length][j + length].symbol), "~");
+                    snprintf(board[i - length][j + length].symbol, sizeof(board[i - length][j + length].symbol), "$");
                     length++;
                 }
             }
@@ -149,17 +149,17 @@ void generateBoard (char p1[], char p2[], int *pos1, int *pos2, int boardLength,
                 length = 1;
                 while (length < snakeSize){
                     board[i + length][j - length].type = 'S';
-                    snprintf(board[i + length][j - length].symbol, sizeof(board[i + length][j - length].symbol), "~");
+                    snprintf(board[i + length][j - length].symbol, sizeof(board[i + length][j - length].symbol), "$");
                     length++;
                 }
                 board[i + length][j - length].type = 'M';
-                snprintf(board[i + length][j - length].symbol, sizeof(board[i + length][j - length].symbol), "~");
+                snprintf(board[i + length][j - length].symbol, sizeof(board[i + length][j - length].symbol), "$");
             }
             else if (board[i][j].type == 'C'){ //slide towards bottom left
                 length = 1;
                 while (length <= snakeSize){
                     board[i - length][j - length].type = 'S';
-                    snprintf(board[i - length][j - length].symbol, sizeof(board[i - length][j - length].symbol), "~");
+                    snprintf(board[i - length][j - length].symbol, sizeof(board[i - length][j - length].symbol), "$");
                     length++;
                 }
             }
@@ -198,7 +198,7 @@ void updateBoard(char p1[], char p2[], int *pos1, int *pos2, int boardLength, in
                 }
 
                 else if(board[i][j].type == 'C' || board[i][j].type == 'S' || board[i][j].type == 'M' || board[i][j].type == 'W'){
-                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "~");  // Snake
+                    snprintf(board[i][j].symbol, sizeof(board[i][j].symbol), "$");  // Snake
                 }
 
                 else {
@@ -261,36 +261,4 @@ void letsRoll() {
             printf("Invalid command.\n");
         }
     }
-}
-
-// Function for when user requests help
-
-void help() {
-    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-    printf("       Welcome to the Epic Snakes & Ladders Game!         \n");
-    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-    printf("Below is a list of instructions to win the game of snakes and ladders's\n\n");
-
-    printf(" Rules:\n");
-    printf("1. This is a two-player game, where each player takes turns rolling the dice.\n");
-    printf("2. Your goal is to be the first to reach the end of the board.\n");
-    printf("3. Type 'r' and press enter to roll the dice\n");
-    printf("4. Landing on a snakes head marked with a '#' will send you sliding back down the board.\n");
-    printf("5. Land on the bottom of ladders |*| to help you climb up and skip ahead!\n");
-    printf("\n");
-
-    printf(" Symbols:\n");
-    printf(" *   : Neutral spot. Simply a safe spot.\n");
-    printf(" |*| : Ladder. Will allow you to climb up!\n");
-    printf(" #   : Snake. This will pull you down.\n");
-    printf(" P1  : Player 1's current position.\n");
-    printf(" P2  : Player 2's current position.\n");
-    printf(" B   : Both players on the same slot.\n");
-    printf("\n");
-
-    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-    printf(" How to Win:\n");
-    printf(" * The first player to reach the final spot (Slot 100) is the champion!\n");
-    printf(" * Best of luck!\n");
-    printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 }
