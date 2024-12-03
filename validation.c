@@ -38,7 +38,7 @@ void usage() {
 }
 
 void error() {
-    fprintf(stderr, "Error: Invalid number of arguments. Use --help for usage instructions.\n");
+    fprintf(stderr, "Error: Invalid input. Use --help for usage instructions.\n");
 }
 
 int isInputValid(const char *str, int *result) {
