@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void help() {
+void help() { //help function to show how everything works
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
     printf("       Welcome to the Epic Snakes & Ladders Game!         \n");
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
@@ -32,17 +32,17 @@ void help() {
     printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 }
 
-void usage() {
+void usage() { //explains game's command line interface to user
     printf("Usage: ./game [boardLength] [boardHeight]\n");
     printf("boardLength and boardHeight must be integers between 8 and 30.\n");
     printf("The 2nd and 3rd arguments represent the dimensions of a custom board. For example, if './game 10 12' is entered, the game will be played on a 10 x 12 board.");
 }
 
-void error() {
+void error() { //hold error message
     fprintf(stderr, "Error: Invalid input. Use --help for usage instructions.\n");
 }
 
-int isInputValid(const char *str, int *result) {
+int isInputValid(const char *str, int *result) { //checks for valid input
     char *endptr;
     long value = strtol(str, &endptr, 10); // convert string to long
     if (*endptr != '\0' || endptr == str) {
