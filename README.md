@@ -1,4 +1,4 @@
-## Snakes and Ladders Game!!
+## Snakes and Ladders Game!! 
 This is a fun and interactive game played in the command line. A remake of the famous game snakes and ladders, to win be the first person to reach the end, try to avoid the snakes and climb ladders to reach victory!
 
 ## How to Play
